@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -491,13 +492,52 @@ class MainActivity : AppCompatActivity() {
         true
     }
     R.id.list->{
+        webView.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        webView.clearView()
+
         webView.loadUrl("https://damasfollows.com/services")
+
         webView.requestFocus()
+        webView.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+
+
+
         true
             }
             R.id.faq->{
-                webView.loadUrl("https://damasfollows.com/faq")
-                webView.requestFocus()
+
+
+
+               webView.setWebViewClient(object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView,
+                        urlNewString: String
+                    ): Boolean {
+
+
+                        view.loadUrl("https://damasfollows.com/faq")
+                        view.requestFocus()
+                        return true
+                    }
+
+                    override fun onPageStarted(view: WebView, url: String, facIcon: Bitmap) {
+                        progressBar.visibility = View.VISIBLE
+                        webView.clearView()
+                    }
+
+                    override fun onPageFinished(view: WebView, url: String) {
+                        progressBar.visibility = View.GONE
+
+                    }
+                })
+
+
+
+
+
+
                 true
             }
         }
